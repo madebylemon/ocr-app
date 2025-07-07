@@ -167,9 +167,14 @@ const OCRExtractApp = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-6">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-2xl shadow-lg">
+            <button
+              className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-2xl shadow-lg focus:outline-none transition-all duration-200 transform hover:scale-105 hover:from-blue-700 hover:to-purple-700"
+              title="Go to Invoice Data Extraction Suite"
+              onClick={() => window.open('/invoice-extractor.html', '_blank', 'noopener')}
+              style={{ cursor: 'pointer' }}
+            >
               <FileText className="w-8 h-8 text-white" />
-            </div>
+            </button>
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             OCR Extract Pro
