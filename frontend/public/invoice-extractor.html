@@ -153,12 +153,31 @@ function extractInvoiceData() {
 }
 function extractSellerInfo(text) {
     const patterns = {
-        name: [/(?:seller|vendor|company|from)[:\s]*([^\n\r]+)/i,/^([A-Z][a-z\s&.,]+(?:Inc|LLC|Corp|Ltd|Co)\.?)/gm,/bill from[:\s]*([^\n\r]+)/i],
-        address: [/(?:address|addr)[:\s]*([^\n\r]+(?:\n[^\n\r]+)*)/i,/(\d+\s+[A-Za-z\s]+(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd)[^\n\r]*)/i],
-        phone: [/(?:phone|tel|telephone)[:\s]*([+]?\d[\d\s\-().]+)/i,/([+]?\d[\d\s\-().]{10,})/g],
-        email: [/(?:email|e-mail)[:\s]*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i,/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g],
-        website: [/(?:website|web|url)[:\s]*((?:https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i,/((?:https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g],
-        taxId: [/(?:tax id|tax number|vat|vat number|ein)[:\s]*([A-Z0-9\-]+)/i,/(?:tax|vat)[:\s#]*([A-Z0-9\-]{5,})/i]
+        name: [
+            /(?:seller|vendor|company|from|công ty|đơn vị bán hàng|bên bán|bên cung cấp|nhà cung cấp)[:\s]*([^\n\r]+)/i,
+            /^([A-ZÀ-Ỹ][a-zà-ỹA-ZÀ-Ỹ\s&.,]+(?:Inc|LLC|Corp|Ltd|Co|TNHH|Công ty|CP|Cổ phần|Trách nhiệm hữu hạn)\.?)/gm,
+            /bill from[:\s]*([^\n\r]+)/i
+        ],
+        address: [
+            /(?:address|addr|địa chỉ|đ\/c)[:\s]*([^\n\r]+(?:\n[^\n\r]+)*)/i,
+            /(\d+\s+[A-Za-zÀ-Ỹà-ỹ\s]+(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd|Đường|Phố|Ngõ|Hẻm)[^\n\r]*)/i
+        ],
+        phone: [
+            /(?:phone|tel|telephone|điện thoại|số điện thoại|dt)[:\s]*([+]?\d[\d\s\-().]+)/i,
+            /([+]?\d[\d\s\-().]{10,})/g
+        ],
+        email: [
+            /(?:email|e-mail|thư điện tử)[:\s]*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i,
+            /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g
+        ],
+        website: [
+            /(?:website|web|url|trang web)[:\s]*((?:https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i,
+            /((?:https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g
+        ],
+        taxId: [
+            /(?:tax id|tax number|vat|vat number|ein|mã số thuế|mst)[:\s]*([A-Z0-9\-]+)/i,
+            /(?:tax|vat|mst|mã số thuế)[:\s#]*([A-Z0-9\-]{5,})/i
+        ]
     };
     for (const [key, regexArray] of Object.entries(patterns)) {
         for (const regex of regexArray) {
@@ -169,11 +188,24 @@ function extractSellerInfo(text) {
 }
 function extractBuyerInfo(text) {
     const patterns = {
-        name: [/(?:buyer|customer|bill to|ship to|to)[:\s]*([^\n\r]+)/i,/(?:invoice to|billed to)[:\s]*([^\n\r]+)/i],
-        address: [/(?:billing address|shipping address)[:\s]*([^\n\r]+(?:\n[^\n\r]+)*)/i,/(?:bill to|ship to)[:\s]*[^\n\r]+\n([^\n\r]+(?:\n[^\n\r]+)*)/i],
-        phone: [/(?:customer phone|buyer phone)[:\s]*([+]?\d[\d\s\-().]+)/i],
-        email: [/(?:customer email|buyer email)[:\s]*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i],
-        contact: [/(?:contact person|contact)[:\s]*([^\n\r]+)/i,/(?:attn|attention)[:\s]*([^\n\r]+)/i]
+        name: [
+            /(?:buyer|customer|bill to|ship to|to|khách hàng|bên mua|bên nhận hàng|người mua|đơn vị mua hàng)[:\s]*([^\n\r]+)/i,
+            /(?:invoice to|billed to|mua hàng cho|người nhận)[:\s]*([^\n\r]+)/i
+        ],
+        address: [
+            /(?:billing address|shipping address|địa chỉ|đ\/c)[:\s]*([^\n\r]+(?:\n[^\n\r]+)*)/i,
+            /(?:bill to|ship to|đơn vị mua hàng|bên mua|người nhận)[:\s]*[^\n\r]+\n([^\n\r]+(?:\n[^\n\r]+)*)/i
+        ],
+        phone: [
+            /(?:customer phone|buyer phone|điện thoại|số điện thoại|dt)[:\s]*([+]?\d[\d\s\-().]+)/i
+        ],
+        email: [
+            /(?:customer email|buyer email|thư điện tử)[:\s]*([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i
+        ],
+        contact: [
+            /(?:contact person|contact|người liên hệ|liên hệ)[:\s]*([^\n\r]+)/i,
+            /(?:attn|attention|người nhận hàng)[:\s]*([^\n\r]+)/i
+        ]
     };
     for (const [key, regexArray] of Object.entries(patterns)) {
         for (const regex of regexArray) {
@@ -184,14 +216,36 @@ function extractBuyerInfo(text) {
 }
 function extractInvoiceDetails(text) {
     const patterns = {
-        invoiceNumber: [/(?:invoice|inv)[\s#]*(?:number|no|#)[:\s]*([A-Z0-9\-]+)/i,/(?:invoice|inv)[\s#]*([A-Z0-9\-]+)/i,/#[A-Z0-9\-]+/g],
-        invoiceDate: [/(?:invoice date|date|issued)[:\s]*(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/i,/(?:date)[:\s]*(\d{1,2}\s+[A-Za-z]+\s+\d{2,4})/i,/(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/g],
-        dueDate: [/(?:due date|payment due)[:\s]*(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/i,/(?:due)[:\s]*(\d{1,2}\s+[A-Za-z]+\s+\d{2,4})/i],
-        total: [/(?:total|grand total|amount due)[:\s]*[$]?([\d,]+\.?\d*)/i,/(?:total)[:\s]*[$]?([\d,]+\.?\d*)/i],
-        subtotal: [/(?:subtotal|sub total)[:\s]*[$]?([\d,]+\.?\d*)/i],
-        tax: [/(?:tax|vat|sales tax)[:\s]*[$]?([\d,]+\.?\d*)/i],
-        discount: [/(?:discount|savings)[:\s]*[$]?([\d,]+\.?\d*)/i],
-        shipping: [/(?:shipping|delivery|freight)[:\s]*[$]?([\d,]+\.?\d*)/i]
+        invoiceNumber: [
+            /(?:invoice|inv|số hóa đơn|số hd|số bill|số)\s*[#:]*\s*([A-Z0-9\-]+)/i,
+            /(?:invoice|inv|hóa đơn|hd)[\s#]*([A-Z0-9\-]+)/i,
+            /#[A-Z0-9\-]+/g
+        ],
+        invoiceDate: [
+            /(?:invoice date|date|issued|ngày hóa đơn|ngày lập|ngày)[:\s]*(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/i,
+            /(?:date|ngày)[:\s]*(\d{1,2}\s+[A-Za-zÀ-Ỹà-ỹ]+\s+\d{2,4})/i,
+            /(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/g
+        ],
+        dueDate: [
+            /(?:due date|payment due|hạn thanh toán|ngày đến hạn)[:\s]*(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})/i,
+            /(?:due|hạn)[:\s]*(\d{1,2}\s+[A-Za-zÀ-Ỹà-ỹ]+\s+\d{2,4})/i
+        ],
+        total: [
+            /(?:total|grand total|amount due|tổng cộng|thành tiền|tổng tiền)[:\s]*[$]?([\d,.]+\.?\d*)/i,
+            /(?:total|tổng cộng|thành tiền)[:\s]*[$]?([\d,.]+\.?\d*)/i
+        ],
+        subtotal: [
+            /(?:subtotal|sub total|tạm tính)[:\s]*[$]?([\d,.]+\.?\d*)/i
+        ],
+        tax: [
+            /(?:tax|vat|sales tax|thuế suất|thuế gtgt|thuế)[:\s]*[$]?([\d,.]+\.?\d*)/i
+        ],
+        discount: [
+            /(?:discount|savings|giảm giá|chiết khấu)[:\s]*[$]?([\d,.]+\.?\d*)/i
+        ],
+        shipping: [
+            /(?:shipping|delivery|freight|vận chuyển|phí ship|phí vận chuyển)[:\s]*[$]?([\d,.]+\.?\d*)/i
+        ]
     };
     for (const [key, regexArray] of Object.entries(patterns)) {
         for (const regex of regexArray) {
@@ -204,19 +258,19 @@ function extractProductTable(text) {
     const lines = text.split('\n');
     let tableStartIndex = -1;
     let tableEndIndex = -1;
+    // Support both English and Vietnamese headers
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLowerCase();
-        if (line.includes('description') || line.includes('item') || line.includes('product')) {
-            if (line.includes('quantity') || line.includes('price') || line.includes('total')) {
-                tableStartIndex = i;
-                break;
-            }
+        if ((line.includes('description') || line.includes('item') || line.includes('product') || line.includes('diễn giải') || line.includes('tên hàng') || line.includes('mặt hàng')) &&
+            (line.includes('quantity') || line.includes('số lượng') || line.includes('price') || line.includes('đơn giá') || line.includes('thành tiền') || line.includes('total'))) {
+            tableStartIndex = i;
+            break;
         }
     }
     if (tableStartIndex !== -1) {
         for (let i = tableStartIndex + 1; i < lines.length; i++) {
             const line = lines[i].toLowerCase();
-            if (line.includes('subtotal') || line.includes('total') || line.includes('tax') || line.trim() === '') {
+            if (line.includes('subtotal') || line.includes('total') || line.includes('tax') || line.includes('tạm tính') || line.includes('tổng cộng') || line.trim() === '') {
                 tableEndIndex = i;
                 break;
             }
@@ -224,27 +278,25 @@ function extractProductTable(text) {
         if (tableEndIndex === -1) tableEndIndex = lines.length;
         for (let i = tableStartIndex + 1; i < tableEndIndex; i++) {
             const line = lines[i].trim();
-            if (line && !line.toLowerCase().includes('total')) {
-                const parts = line.split(/\s+/);
-                if (parts.length >= 3) {
-                    const product = { description: '', quantity: '', unitPrice: '', totalPrice: '' };
-                    const moneyPattern = /\$?[\d,]+\.?\d*/g;
-                    const moneyMatches = line.match(moneyPattern) || [];
-                    const qtyPattern = /\b\d+\b/g;
-                    const qtyMatches = line.match(qtyPattern) || [];
-                    if (moneyMatches.length >= 2) {
-                        product.unitPrice = moneyMatches[0];
-                        product.totalPrice = moneyMatches[moneyMatches.length - 1];
-                    } else if (moneyMatches.length === 1) {
-                        product.totalPrice = moneyMatches[0];
-                    }
-                    if (qtyMatches.length > 0) {
-                        product.quantity = qtyMatches[0];
-                    }
-                    product.description = line.replace(/\$?[\d,]+\.?\d*/g, '').replace(/\b\d+\b/g, '').trim();
-                    if (product.description || product.totalPrice) {
-                        extractedData.productTable.push(product);
-                    }
+            if (line && !line.toLowerCase().includes('total') && !line.toLowerCase().includes('tổng cộng')) {
+                const product = { description: '', quantity: '', unitPrice: '', totalPrice: '' };
+                // Try to extract Vietnamese and English money/qty
+                const moneyPattern = /\$?[\d,.]+\.?\d*/g;
+                const moneyMatches = line.match(moneyPattern) || [];
+                const qtyPattern = /\b\d+\b/g;
+                const qtyMatches = line.match(qtyPattern) || [];
+                if (moneyMatches.length >= 2) {
+                    product.unitPrice = moneyMatches[0];
+                    product.totalPrice = moneyMatches[moneyMatches.length - 1];
+                } else if (moneyMatches.length === 1) {
+                    product.totalPrice = moneyMatches[0];
+                }
+                if (qtyMatches.length > 0) {
+                    product.quantity = qtyMatches[0];
+                }
+                product.description = line.replace(/\$?[\d,.]+\.?\d*/g, '').replace(/\b\d+\b/g, '').trim();
+                if (product.description || product.totalPrice) {
+                    extractedData.productTable.push(product);
                 }
             }
         }
@@ -252,9 +304,18 @@ function extractProductTable(text) {
 }
 function extractPaymentInfo(text) {
     const patterns = {
-        paymentMethod: [/(?:payment method|payment|pay by)[:\s]*([^\n\r]+)/i,/(?:credit card|visa|mastercard|amex|paypal|bank transfer|check|cash)/i],
-        paymentTerms: [/(?:payment terms|terms)[:\s]*([^\n\r]+)/i,/(?:net \d+|due on receipt|payment due)/i],
-        paymentInstructions: [/(?:payment instructions|how to pay)[:\s]*([^\n\r]+)/i,/(?:please pay|remit payment)[:\s]*([^\n\r]+)/i]
+        paymentMethod: [
+            /(?:payment method|payment|pay by|phương thức thanh toán|hình thức thanh toán)[:\s]*([^\n\r]+)/i,
+            /(?:credit card|visa|mastercard|amex|paypal|bank transfer|check|cash|chuyển khoản|tiền mặt|thẻ)/i
+        ],
+        paymentTerms: [
+            /(?:payment terms|terms|điều khoản thanh toán|thời hạn thanh toán)[:\s]*([^\n\r]+)/i,
+            /(?:net \d+|due on receipt|payment due|thanh toán ngay|trả sau|trả trước)/i
+        ],
+        paymentInstructions: [
+            /(?:payment instructions|how to pay|hướng dẫn thanh toán|cách thanh toán)[:\s]*([^\n\r]+)/i,
+            /(?:please pay|remit payment|vui lòng thanh toán|chuyển khoản về)[:\s]*([^\n\r]+)/i
+        ]
     };
     for (const [key, regexArray] of Object.entries(patterns)) {
         for (const regex of regexArray) {
