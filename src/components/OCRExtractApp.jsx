@@ -74,20 +74,26 @@ const OCRExtractApp = () => {
     ));
 
     try {
-      // Simulate OCR processing - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 3000));
-      
-      const mockExtractedText = `Extracted text from ${fileObj.name}:\n\nThis is a sample extraction result. In a real implementation, this would be the actual text extracted from your ${fileObj.type.startsWith('image/') ? 'image' : 'PDF'} file using OCR technology.\n\nThe text would include:\n- All readable text content\n- Proper formatting and spacing\n- Line breaks and paragraphs\n- Any tables or structured data\n\nProcessing completed successfully at ${new Date().toLocaleTimeString()}.`;
-
+      const formData = new FormData();
+      formData.append('file', fileObj.file);
+      const response = await fetch('http://127.0.0.1:8000/extract', {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'OCR extraction failed');
+      }
+      const data = await response.json();
       setFiles(prev => prev.map(f => 
         f.id === fileObj.id 
-          ? { ...f, status: 'completed', extractedText: mockExtractedText }
+          ? { ...f, status: 'completed', extractedText: data.text }
           : f
       ));
     } catch (error) {
       setFiles(prev => prev.map(f => 
         f.id === fileObj.id 
-          ? { ...f, status: 'error', extractedText: 'Error processing file. Please try again.' }
+          ? { ...f, status: 'error', extractedText: error.message || 'Error processing file. Please try again.' }
           : f
       ));
     }
