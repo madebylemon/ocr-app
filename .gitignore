@@ -1,1 +1,21 @@
-node_modules
+# .gitignore
+# Node
+node_modules/
+frontend/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+backend/.venv/
+backend/venv/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Env
+.env
+backend/.env
+frontend/.env
