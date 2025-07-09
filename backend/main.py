@@ -24,12 +24,13 @@ async def extract_text(file: UploadFile = File(...)):
         contents = await file.read()
         text = ""
         if file.content_type.startswith("image/"):
-            image = Image.open(tempfile.NamedTemporaryFile(delete=False, suffix='.img'))
+            # Reset file pointer and open image
+            file.file.seek(0)
             image = Image.open(file.file)
-            text = pytesseract.image_to_string(image)
+            text = pytesseract.image_to_string(image, lang="vie+eng")
         elif file.content_type == "application/pdf":
             images = convert_from_bytes(contents)
-            text = "\n".join([pytesseract.image_to_string(img) for img in images])
+            text = "\n".join([pytesseract.image_to_string(img, lang="vie+eng") for img in images])
         else:
             return JSONResponse({"error": "Unsupported file type."}, status_code=400)
         return {"text": text}
