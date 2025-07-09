@@ -3,15 +3,23 @@
 
 An all-in-one OCR and invoice extraction suite for English and Vietnamese documents.
 
+
 ## Features
 
 - **Image & PDF OCR**: Upload images (JPG, PNG, GIF, WebP) or PDF files for instant text extraction using Tesseract (supports English & Vietnamese).
+- **Vietnamese Text Correction**: Automatically fix common OCR font/character errors in Vietnamese text, making the output more accurate and readable.
 - **Invoice Data Extraction Suite**: Advanced tool for extracting structured invoice data (seller, buyer, invoice details, line items, payment info) from OCR text, supporting both English and Vietnamese field labels/values.
 - **Export & Copy**: Download/copy extracted text, or export invoice data as JSON/CSV.
 - **Modern UI**: Beautiful React frontend with drag-and-drop, batch upload, and responsive design (Tailwind CSS).
 - **Backend**: FastAPI server with Tesseract OCR and PDF/image support.
 - **Invoice Tool Access**: Click the app logo to open the Invoice Extraction Suite in a new tab.
 - **Monorepo**: All code (frontend & backend) in a single repo for easy development and deployment.
+
+---
+
+## Vietnamese Text Correction
+
+OCR on Vietnamese documents can sometimes produce incorrect or garbled characters due to font or encoding issues. This app includes a built-in tool that automatically detects and corrects common Vietnamese OCR errors, so your extracted text is more accurate and makes sense for further processing or export.
 
 ---
 
