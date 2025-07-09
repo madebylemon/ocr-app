@@ -1,16 +1,22 @@
+
 # OCR Extract Pro
 
-A full-stack application for extracting text from images and PDF documents using OCR (Optical Character Recognition).
+An all-in-one OCR and invoice extraction suite for English and Vietnamese documents.
 
 ## Features
-- Upload images (JPG, PNG, GIF, WebP) and PDF files
-- Real-time OCR extraction using a FastAPI backend and Tesseract
-- Modern React frontend with drag-and-drop, batch processing, and beautiful UI
-- Download or copy extracted text
+
+- **Image & PDF OCR**: Upload images (JPG, PNG, GIF, WebP) or PDF files for instant text extraction using Tesseract (supports English & Vietnamese).
+- **Invoice Data Extraction Suite**: Advanced tool for extracting structured invoice data (seller, buyer, invoice details, line items, payment info) from OCR text, supporting both English and Vietnamese field labels/values.
+- **Export & Copy**: Download/copy extracted text, or export invoice data as JSON/CSV.
+- **Modern UI**: Beautiful React frontend with drag-and-drop, batch upload, and responsive design (Tailwind CSS).
+- **Backend**: FastAPI server with Tesseract OCR and PDF/image support.
+- **Invoice Tool Access**: Click the app logo to open the Invoice Extraction Suite in a new tab.
+- **Monorepo**: All code (frontend & backend) in a single repo for easy development and deployment.
 
 ---
 
 ## Project Structure
+
 ```
 ocr-extract/
 ├── backend/           # FastAPI OCR backend
@@ -19,6 +25,7 @@ ocr-extract/
 └── frontend/          # React frontend
     ├── src/
     ├── public/
+    │   └── invoice-extractor.html  # Standalone Invoice Extraction Suite
     ├── package.json
     └── ...
 ```
@@ -30,14 +37,14 @@ ocr-extract/
 ### Prerequisites
 - Python 3.8+
 - Node.js 16+
-- Tesseract OCR installed on your system ([installation guide](https://github.com/tesseract-ocr/tesseract))
+- Tesseract OCR installed ([installation guide](https://github.com/tesseract-ocr/tesseract))
 
 ### 1. Backend Setup
 ```sh
 cd backend
 pip install -r requirements.txt
 # Start the FastAPI server
-python3 -m uvicorn main:app --reload
+uvicorn main:app --reload
 ```
 - The API will be available at `http://127.0.0.1:8000/extract`
 
@@ -52,19 +59,23 @@ npm start
 ---
 
 ## Usage
+
 1. Start both backend and frontend servers.
-2. Upload images or PDFs in the web UI.
-3. Click "Process" to extract text using OCR.
-4. Download or copy the extracted text.
+2. Upload images or PDFs in the web UI for OCR extraction.
+3. Click the app logo to open the Invoice Data Extraction Suite for advanced invoice field extraction (supports both English and Vietnamese labels/values).
+4. Download/copy extracted text, or export invoice data as JSON/CSV.
 
 ---
 
+
 ## Deployment
-- You can deploy the backend (FastAPI) to any Python-friendly host (e.g., Heroku, Render, AWS, etc.).
-- The frontend can be deployed to Vercel, Netlify, or any static hosting.
+
+- Deploy the backend (FastAPI) to any Python-friendly host (Heroku, Render, AWS, etc.).
+- Deploy the frontend to Vercel, Netlify, or any static host.
 - Update the API endpoint in the frontend if deploying separately.
 
 ---
+
 
 ## Credits
 - [React](https://react.dev/)
@@ -74,6 +85,7 @@ npm start
 - [Lucide Icons](https://lucide.dev/)
 
 ---
+
 
 ## License
 MIT
